@@ -66,6 +66,38 @@ CREATE TABLE IF NOT EXISTS book_transactions (
     FOREIGN KEY (bookId) REFERENCES book(id) ON DELETE CASCADE
 );
 
+-- Create student_semister table
+CREATE TABLE IF NOT EXISTS student_semisters (
+    id INT NOT NULL PRIMARY KEY,
+    studentId INT NOT NULL PRIMARY KEY,
+    year INT NOT NULL CHECK (year BETWEEN 1 and 4),
+    semister INT NOT NULL CHECK (year BETWEEN 1 and 2),
+    FOREIGN KEY (studentId) REFERENCES student(id) ON DELETE CASCADE
+);
+
+-- Create index for student_semister table on id column
+CREATE INDEX semister_id_idx ON student_semisters(id);
+
+-- Create student_marks table
+CREATE TABLE IF NOT EXISTS student_marks (
+	id INT NOT NULL PRIMARY KEY,
+    studentId INT NOT NULL,
+    semisterId INT NOT NULL,
+    firstSubject INT NOT NULL CHECK (firstSubject BETWEEN 0 and 100),
+    secondSubject INT NOT NULL CHECK (secondSubject BETWEEN 0 and 100),
+    thirdSubject INT NOT NULL CHECK (thirdSubject BETWEEN 0 and 100),
+    fourthSubject INT NOT NULL CHECK (fourthSubject BETWEEN 0 and 100),
+    fifthSubject INT NOT NULL CHECK (fifthSubject BETWEEN 0 and 100),
+    sixthSubject INT NOT NULL CHECK (sixthSubject BETWEEN 0 and 100),
+    firstLab INT NOT NULL CHECK (firstLab BETWEEN 0 and 75),
+    secondLab INT NOT NULL CHECK (secondLab BETWEEN 0 and 75),
+    FOREIGN KEY (studentId) REFERENCES student(id) ON DELETE CASCADE,
+    FOREIGN KEY (semisterId) REFERENCES student_semisters(id) ON DELETE CASCADE
+);
+
+-- Create index for student_marks table on id, studentId, semisterId columns
+CREATE INDEX student_semister_id_idx ON student_marks(id, studentId, semisterId);
+
 -- Drop procedure if it exists
 DROP PROCEDURE IF EXISTS insert_book_transaction_if_eligible;
 
