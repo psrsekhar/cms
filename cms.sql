@@ -60,37 +60,39 @@ CREATE TABLE IF NOT EXISTS book_transactions (
     studentId INT NOT NULL, 
     bookId INT NOT NULL, 
     issuedDate DATE NOT NULL, 
-    returnDate DATE NOT NULL, 
-    fine INT NOT NULL DEFAULT 0, 
+    returnDate DATE DEFAULT NULL, 
+    fine INT NOT NULL DEFAULT 0,
+	isLostOrDamaged BOOLEAN NOT NULL DEFAULT FALSE,
     FOREIGN KEY (studentId) REFERENCES student(id) ON DELETE CASCADE, 
     FOREIGN KEY (bookId) REFERENCES book(id) ON DELETE CASCADE
 );
 
 -- Create student_semister table
 CREATE TABLE IF NOT EXISTS student_semisters (
-    id INT NOT NULL PRIMARY KEY,
-    studentId INT NOT NULL PRIMARY KEY,
-    year INT NOT NULL CHECK (year BETWEEN 1 and 4),
-    semister INT NOT NULL CHECK (year BETWEEN 1 and 2),
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    studentId INT NOT NULL,
+    year INT NOT NULL CHECK (year BETWEEN 1 AND 4),
+    semester INT NOT NULL CHECK (semester BETWEEN 1 AND 2),
     FOREIGN KEY (studentId) REFERENCES student(id) ON DELETE CASCADE
 );
+
 
 -- Create index for student_semister table on id column
 CREATE INDEX semister_id_idx ON student_semisters(id);
 
 -- Create student_marks table
 CREATE TABLE IF NOT EXISTS student_marks (
-	id INT NOT NULL PRIMARY KEY,
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     studentId INT NOT NULL,
     semisterId INT NOT NULL,
-    firstSubject INT NOT NULL CHECK (firstSubject BETWEEN 0 and 100),
-    secondSubject INT NOT NULL CHECK (secondSubject BETWEEN 0 and 100),
-    thirdSubject INT NOT NULL CHECK (thirdSubject BETWEEN 0 and 100),
-    fourthSubject INT NOT NULL CHECK (fourthSubject BETWEEN 0 and 100),
-    fifthSubject INT NOT NULL CHECK (fifthSubject BETWEEN 0 and 100),
-    sixthSubject INT NOT NULL CHECK (sixthSubject BETWEEN 0 and 100),
-    firstLab INT NOT NULL CHECK (firstLab BETWEEN 0 and 75),
-    secondLab INT NOT NULL CHECK (secondLab BETWEEN 0 and 75),
+    firstSubject INT NOT NULL CHECK (firstSubject BETWEEN 0 AND 100),
+    secondSubject INT NOT NULL CHECK (secondSubject BETWEEN 0 AND 100),
+    thirdSubject INT NOT NULL CHECK (thirdSubject BETWEEN 0 AND 100),
+    fourthSubject INT NOT NULL CHECK (fourthSubject BETWEEN 0 AND 100),
+    fifthSubject INT NOT NULL CHECK (fifthSubject BETWEEN 0 AND 100),
+    sixthSubject INT NOT NULL CHECK (sixthSubject BETWEEN 0 AND 100),
+    firstLab INT NOT NULL CHECK (firstLab BETWEEN 0 AND 75),
+    secondLab INT NOT NULL CHECK (secondLab BETWEEN 0 AND 75),
     FOREIGN KEY (studentId) REFERENCES student(id) ON DELETE CASCADE,
     FOREIGN KEY (semisterId) REFERENCES student_semisters(id) ON DELETE CASCADE
 );
@@ -106,51 +108,34 @@ DELIMITER //
 CREATE PROCEDURE insert_book_transaction_if_eligible (
     IN studentId INT,
     IN bookId INT,
-    IN issuedDate DATE,
-    IN returnDate DATE,
-    IN isLostOrDamaged BOOLEAN
+    IN issuedDate DATE
 )
 BEGIN
     DECLARE can_borrow BOOLEAN;
-    DECLARE fine INT DEFAULT 0;
-    DECLARE days_diff INT;
-	DECLARE bookPrice INT;
-    -- Check eligibility
-SELECT CHECK_ELIGIBILITY_TO_BORROW(studentId) INTO can_borrow;
-    
+
+    -- Check eligibility to borrow (make sure there are no books currently borrowed by the student)
+    SELECT COUNT(*) = 0 INTO can_borrow
+    FROM book_transactions
+    WHERE studentId = studentId 
+      AND returnDate IS NULL;  -- Check if there are any unreturned books
+
     -- If eligible, insert into book_transactions table
     IF can_borrow THEN
-        -- Calculate the difference in days between issuedDate and returnDate
-        SET days_diff = DATEDIFF(returnDate, issuedDate);
-
-        -- If book is lost or damaged, calculate fine accordingly
-        IF isLostOrDamaged THEN
-            -- Fetch the price of the book
-            SELECT price INTO bookPrice FROM book WHERE id = bookId;
-
-            -- Calculate fine for lost or damaged book
-            SET fine = bookPrice + ((days_diff - 3) * 100);
-        ELSE
-            -- Calculate fine if days_diff is greater than 3
-            IF days_diff > 3 THEN
-                SET fine = (days_diff - 3) * 100; -- Fine for extra days
-            END IF;
-        END IF;
-
         -- Insert into book_transactions
-        INSERT INTO book_transactions (studentId, bookId, issuedDate, returnDate, fine)
-        VALUES (studentId, bookId, issuedDate, returnDate, fine);
-        
+        INSERT INTO book_transactions (studentId, bookId, issuedDate)
+        VALUES (studentId, bookId, issuedDate);
+
         -- Return true indicating successful insertion
-SELECT TRUE AS eligibility_status;
+        SELECT TRUE AS eligibility_status;
     ELSE
         -- Return false indicating not eligible
         SELECT FALSE AS eligibility_status;
     END IF;
-    
+
 END //
 
 DELIMITER ;
+
 
 -- Drop and recreate the procedure if it exists
 DROP PROCEDURE IF EXISTS update_book_transaction;
@@ -191,39 +176,6 @@ BEGIN
     SET returnDate = returnDate, fine = fine
     WHERE studentId = studentId AND bookId = bookId AND issuedDate = issuedDate;
     
-END //
-
-DELIMITER ;
-
--- Create function to check eligibility to borrow books
-DROP FUNCTION IF EXISTS check_eligibility_to_borrow;
-
-DELIMITER //
-
-CREATE FUNCTION check_eligibility_to_borrow(
-    studentId INT
-)
-RETURNS BOOLEAN
-DETERMINISTIC
-READS SQL DATA
-BEGIN
-    DECLARE borrowed_count INT;
-
-    -- Initialize borrowed_count
-    SET borrowed_count = 0;
-
-    -- Count the number of books borrowed by the student that are not returned yet
-    SELECT COUNT(*) INTO borrowed_count
-    FROM book_transactions
-    WHERE studentId = studentId
-      AND returnDate IS NULL; -- Assuming returnDate is NULL for books not yet returned
-
-    -- Check eligibility (assuming maximum of 5 books can be borrowed at a time)
-    IF borrowed_count < 5 THEN
-        RETURN TRUE;
-    ELSE
-        RETURN FALSE;
-    END IF;
 END //
 
 DELIMITER ;
@@ -419,14 +371,15 @@ INSERT INTO book (title, author, price, available, edition, addedBy) VALUES
 SET @studentId = 1;
 SET @bookId = 1;
 SET @issuedDate = '2024-07-01';
-SET @returnDate = '2024-07-10';
-SET @isLostOrDamaged = FALSE;
 
 -- Call the procedure
-CALL insert_book_transaction_if_eligible(@studentId, @bookId, @issuedDate, @returnDate, @isLostOrDamaged);
+CALL insert_book_transaction_if_eligible(@studentId, @bookId, @issuedDate);
+
 
 -- Temporarily disable safe update mode
 SET SQL_SAFE_UPDATES = 0;
+SET @isLostOrDamaged = TRUE;
+SET @returnDate = '2024-07-18';
 
 -- Call the procedure
 CALL update_book_transaction(@studentId, @bookId, @issuedDate, @returnDate, @isLostOrDamaged);
@@ -434,4 +387,4 @@ CALL update_book_transaction(@studentId, @bookId, @issuedDate, @returnDate, @isL
 -- Re-enable safe update mode
 SET SQL_SAFE_UPDATES = 1;
 
-SELECT * FROM  book_transactions;
+SELECT * FROM book_transactions;
