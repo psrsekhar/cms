@@ -1,23 +1,14 @@
-<div class="col-12">
-	<nav class="navbar navbar-expand-lg navbar-light bg-dark">
-	  <div class="container-fluid">
-		<a class="navbar-brand text-white" href="#">Menu</a>
-		<button class="navbar-toggler btn-danger" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="menu" aria-expanded="false" aria-label="Toggle navigation">
-		  <span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="menu">
-		  <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-			<li class="nav-item">
-			  <a class="nav-link active text-white" aria-current="page" href="#">Home</a>
-			</li>
-			<li class="nav-item">
-			  <a class="nav-link text-white" aria-current="page" href="#">Login</a>
-			</li>	
-			<li class="nav-item">
-			  <a class="nav-link text-white" aria-current="page" href="#">Register</a>
-			</li>	
-		  </ul>
-		</div>
-	  </div>
-	</nav>
+<div class="col-4 offset-2">
+	<h3 class="text-center">Login page</h3>
+	<form id="loginForm">
+		  <div class="mb-3">
+			<label for="userName" class="form-label">User Name</label>
+			<input type="text" class="form-control" id="userName" required autofocus>
+		  </div>
+		  <div class="mb-3">
+			<label for="password" class="form-label">Password</label>
+			<input type="password" class="form-control" id="password" required autofocus>
+		  </div>
+		  <button type="submit" class="btn btn-primary">Login</button>
+	</form>	
 </div>
