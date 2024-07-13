@@ -1,45 +1,27 @@
-var request = {
-	showPage: function(id,  path){
-		var jqhr = jQuery.get(path, function(data){
-			jQuery("#"+ id).html(data);
-		});
-	},
-	
-	post: function(url, data) {
-		jQuery.ajax({
-			url: url,
-			type: 'POST',
-			dataType: 'json',
-			timeout: 8000, // Set the timeout in milliseconds
-			async: true, // Use asynchronous requests
-			cache: false,
-			processData: false,
-			contentType: 'application/json; charset=utf-8',
-			success: function(response) {
-				responseData = response;
-			},
-			error: function(response) {
-				responseData = response;
-			}
-		});
-	},
-	
-	showMenu: function(){
-		request.showPage("menuDiv", "/html/menu.html");
-	},
-	
-		showHome: function(){
-			request.showPage("pageBody", "/html/home.html");
-		},
-		
-		showLogin: function(){
-			request.showPage("pageBody", "/html/login.html");
-		},
-		
-		showRegister: function(){
-			request.showPage("pageBody", "/html/register.html");
-		}		
-};
+<div class="col-4 offset-2">
+	<h3 class="text-center">Login page</h3>
+	<form id="loginForm" method="POST">
+		  <div class="mb-3">
+			<label for="userName" class="form-label">User Name</label>
+			<input type="text" class="form-control" id="userName" required autofocus>
+		  </div>
+		  <div class="mb-3">
+			<label for="password" class="form-label">Password</label>
+			<input type="password" class="form-control" id="password" required autofocus>
+		  </div>
+		  <button type="submit" class="btn btn-primary">Login</button>
+	</form>	
+</div>
+]<script type="text/javaScript">
+	jQuery("#loginForm").submit(function(event){
+		event.preventDefault();
+		alert();
+		var userName = jQuery("#userName").val();
+		var password = jQuery("#password").val();
+		var response = request.post("login.php", {userName:userName, password:password});
+	});
+</script>
+
 
 
 
