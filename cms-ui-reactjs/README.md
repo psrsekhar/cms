@@ -22,7 +22,7 @@ The College Management System is a comprehensive web application designed to str
    ```
 4. Start the application:
    ```bash
-   npm start (or) npm run dev
+   npm run dev
    ```
 
 ## Usage
