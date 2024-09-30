@@ -23,6 +23,7 @@ export default function DepartmentInfo() {
   return (
     <Section title="Department Information" id="department-info">
       <Tabs
+        ButtonContainer="menu"
         buttons={
           <>
             <TabButton
