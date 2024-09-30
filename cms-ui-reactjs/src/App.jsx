@@ -20,7 +20,7 @@ function App() {
     );
   }
   return (
-    <Fragment>
+    <>
       <Header></Header>
       <main>
         <section id="departments">
@@ -40,7 +40,7 @@ function App() {
           {tabContent}
         </section>
       </main>
-    </Fragment>
+    </>
   );
 }
 

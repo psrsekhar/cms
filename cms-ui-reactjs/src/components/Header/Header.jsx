@@ -1,13 +1,13 @@
 import reactImage from '../../assets/react-core-concepts.png';
 import './Header.css';
 
-const colleges = ['Oxford', 'Harward', 'MIT'];
+const colleges = ['Oxford', 'Harward', 'MIT', 'Stanford'];
 function getRandomInt(max) {
     return Math.floor(Math.random() * (max + 1));
 }
 
 export default function Header() {
-    const collegeName = colleges[getRandomInt(2)];
+    const collegeName = colleges[getRandomInt(3)];
     return (
         <header>
             <img src={reactImage} alt="Stylized atom" />
