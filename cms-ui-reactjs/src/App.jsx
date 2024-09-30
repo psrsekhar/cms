@@ -1,7 +1,7 @@
 import Header from './components/Header/Header.jsx';
 import Department from './components/Department.jsx';
 import TabButton from './components/TabButton/TabButton.jsx';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import { departments } from './department.js';
 import { DEPARTMENTINFO } from './data.js';
 
@@ -20,7 +20,7 @@ function App() {
     );
   }
   return (
-    <div>
+    <Fragment>
       <Header></Header>
       <main>
         <section id="departments">
@@ -40,7 +40,7 @@ function App() {
           {tabContent}
         </section>
       </main>
-    </div>
+    </Fragment>
   );
 }
 
