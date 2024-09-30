@@ -8,8 +8,8 @@ export default function Game() {
       <div id="game-container">
         <h2>Tic-Tac-Toe</h2>
         <ol id="players">
-          <Player name="Player 1" symbol="X"></Player>
-          <Player name="Player 2" symbol="O"></Player>
+          <Player initialName="Player 1" symbol="X"></Player>
+          <Player initialName="Player 2" symbol="O"></Player>
         </ol>
       </div>
     </header>
