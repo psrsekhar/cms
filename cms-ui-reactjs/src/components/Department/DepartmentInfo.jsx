@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import Section from "../Section.jsx";
 import TabButton from "./TabButton/TabButton.jsx";
 import { DEPARTMENTINFO } from "./data.js";
 
@@ -19,35 +20,34 @@ export default function DepartmentInfo() {
   }
 
   return (
-    <section id="department-info">
-      <h2>Department Information</h2>
+    <Section title="Department Information" id="department-info">
       <menu>
         <TabButton
           isSelected={selectedDepartment === "ME"}
-          onSelect={() => handleSelect("ME")}
+          onClick={() => handleSelect("ME")}
         >
           Mechanical
         </TabButton>
         <TabButton
           isSelected={selectedDepartment === "CE"}
-          onSelect={() => handleSelect("CE")}
+          onClick={() => handleSelect("CE")}
         >
           Civil
         </TabButton>
         <TabButton
           isSelected={selectedDepartment === "CSE"}
-          onSelect={() => handleSelect("CSE")}
+          onClick={() => handleSelect("CSE")}
         >
           CSE
         </TabButton>
         <TabButton
           isSelected={selectedDepartment === "EEE"}
-          onSelect={() => handleSelect("EEE")}
+          onClick={() => handleSelect("EEE")}
         >
           EEE
         </TabButton>
       </menu>
       {tabContent}
-    </section>
+    </Section>
   );
 }

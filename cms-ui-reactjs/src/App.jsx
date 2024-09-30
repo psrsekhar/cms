@@ -1,6 +1,6 @@
-import Header from "./components/Header/Header.jsx";
 import { Fragment } from "react";
 
+import Header from "./components/Header/Header.jsx";
 import Departments from "./components/Department/Departments.jsx";
 import DepartmentInfo from "./components/Department/DepartmentInfo.jsx";
 
