@@ -1,5 +1,6 @@
-import Player from "./Player";
+import Player from "./Player.jsx";
 import "./Game.css";
+import Board from "./Board.jsx";
 
 export default function Game() {
   return (
@@ -11,6 +12,7 @@ export default function Game() {
           <Player initialName="Player 1" symbol="X"></Player>
           <Player initialName="Player 2" symbol="O"></Player>
         </ol>
+        <Board></Board>
       </div>
     </header>
   );
