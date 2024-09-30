@@ -1,12 +1,12 @@
-#faculty {
+#department-info {
     margin: 3rem auto;
   }
   
-  #faculty h2 {
+  #department-info h2 {
     text-align: left;
   }
   
-  #faculty menu {
+  #department-info menu {
     margin: 1rem 0;
     padding: 0;
     display: flex;
@@ -14,7 +14,7 @@
     list-style: none;
   }
   
-  #faculty menu button {
+  #department-info menu button {
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 6px;
@@ -26,12 +26,12 @@
     transition: all 0.2s ease-in-out;
   }
   
-  #faculty menu button:hover {
+  #department-info menu button:hover {
     background-color: #1b082f;
     color: #ebe7ef;
   }
   
-  #faculty menu button.active {
+  #department-info menu button.active {
     background-color: #7925d3;
     color: #ebe7ef;
   }

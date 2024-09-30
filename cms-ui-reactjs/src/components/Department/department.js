@@ -1,7 +1,7 @@
-import civilImage from "./assets/components.png";
-import mechImage from "./assets/config.png";
-import cseImage from "./assets/jsx-ui.png";
-import eeeImage from "./assets/state-mgmt.png";
+import civilImage from "../../assets/components.png";
+import mechImage from "../../assets/config.png";
+import cseImage from "../../assets/jsx-ui.png";
+import eeeImage from "../../assets/state-mgmt.png";
 
 export const departments = [
   {
