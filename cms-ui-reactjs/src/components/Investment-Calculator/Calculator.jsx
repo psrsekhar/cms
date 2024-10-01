@@ -1,3 +1,7 @@
+import Header from "./Header.jsx";
+
+import "./Calculator.css";
+
 export default function Calculator() {
-  return <h1>Investment Calculator</h1>;
+  return <Header></Header>;
 }

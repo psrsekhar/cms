@@ -3,17 +3,29 @@
 #calculator {
   text-align: center;
   margin: 3rem auto;
+  max-width: 45rem;
+  padding: 2rem;
+  border-radius: 6px;
+  background: linear-gradient(#161616, #282617);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  position: relative;
 }
 
 #calculator img {
-  width: 5rem;
-  height: 5rem;
+  width: 8rem;
+  height: 8rem;
   object-fit: contain;
   background-color: transparent;
 }
 
-#calculator h1 {
-  font-size: 1.5rem;
+#calculator h2 {
+  font-family: "Caprasimo", cursive;
+  font-size: 3rem;
+  margin: 0 auto 3rem auto;
+  background: linear-gradient(40deg, #ea00ff, #ea00ff, #03d5ff, #03d5ff);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5));
 }
 
 #user-input {
