@@ -21,11 +21,13 @@ function deriveActivePlayer(gameTurns) {
   }
   return currentPlayer;
 }
+
 export default function Game() {
   const [gameTurns, setGameTurns] = useState([]);
   const activePlayer = deriveActivePlayer(gameTurns);
 
-  let gameBoard = initialGameBoard;
+  let gameBoard = [...initialGameBoard.map((array) => [...array])];
+
   for (const turn of gameTurns) {
     const { square, player } = turn;
     const { row, col } = square;
@@ -63,6 +65,11 @@ export default function Game() {
       return updatedTurns;
     });
   }
+
+  function handleRematch() {
+    setGameTurns([]);
+  }
+
   return (
     <header id="game" className="game-background game-header">
       <img src="game-logo.png" alt="Hand drawn Tic-Tac-Toe game board" />
@@ -80,7 +87,9 @@ export default function Game() {
             isActive={activePlayer === "O"}
           ></Player>
         </ol>
-        {(winner || hasDraw) && <GameOver winner={winner} />}
+        {(winner || hasDraw) && (
+          <GameOver winner={winner} onRematch={handleRematch} />
+        )}
         <Board onSelectSquare={handleSelectSquare} board={gameBoard}></Board>
       </div>
       <Log turns={gameTurns} />
