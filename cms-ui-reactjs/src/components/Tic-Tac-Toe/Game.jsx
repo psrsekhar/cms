@@ -45,7 +45,7 @@ export default function Game() {
         </ol>
         <Board onSelectSquare={handleSelectSquare} turns={gameTurns}></Board>
       </div>
-      <Log />
+      <Log turns={gameTurns} />
     </header>
   );
 }

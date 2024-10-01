@@ -239,7 +239,7 @@ ol {
 
 #log {
   max-width: 20rem;
-  color: #3f3b00;
+  color: #9ce5f6;
   list-style: none;
   margin: 2rem auto;
   padding: 0;
@@ -253,12 +253,7 @@ ol {
 }
 
 #log li.highlighted {
-  background-color: rgba(
-    88,
-    8,
-    173,
-    1
-  ); /* Change highlighted color to purple */
+  background-color: rgb(235, 230, 241); /* Change highlighted color to purple */
   color: white;
 }
 
