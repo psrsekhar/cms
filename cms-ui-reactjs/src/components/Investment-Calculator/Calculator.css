@@ -75,16 +75,25 @@
 }
 
 #result thead {
-  font-size: 0.7rem;
+  font-size: 1.2rem;
   color: #83e6c0;
 }
 
 #result tbody {
   font-family: "Roboto Condensed", sans-serif;
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: #c2e9e0;
 }
 
 .center {
   text-align: center;
+}
+
+.validation-message {
+  text-align: center;
+  font-size: 2rem;
+  background: #f28237;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5));
 }
