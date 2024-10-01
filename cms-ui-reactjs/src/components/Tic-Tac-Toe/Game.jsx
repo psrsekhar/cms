@@ -10,11 +10,21 @@ export default function Game() {
   const [gameTurns, setGameTurns] = useState([]);
   const [activePlayer, setActivePlayer] = useState("X");
 
-  function handleSelectSquare() {
+  function handleSelectSquare(rowIndex, colIndex) {
     setActivePlayer((currentActivePlayer) =>
       currentActivePlayer === "X" ? "O" : "X"
     );
-    setGameTurns();
+    setGameTurns((previousTurns) => {
+      let currentPlayer = "X";
+      if (previousTurns.length > 0 && previousTurns[0].player === "X") {
+        currentPlayer = "O";
+      }
+      const updatedTurns = [
+        { square: { row: rowIndex, col: colIndex }, player: currentPlayer },
+        ...previousTurns,
+      ];
+      return updatedTurns;
+    });
   }
   return (
     <header id="game" className="game-background game-header">
@@ -33,10 +43,7 @@ export default function Game() {
             isActive={activePlayer === "O"}
           ></Player>
         </ol>
-        <Board
-          onSelectSquare={handleSelectSquare}
-          activePlayerSymbol={activePlayer}
-        ></Board>
+        <Board onSelectSquare={handleSelectSquare} turns={gameTurns}></Board>
       </div>
       <Log />
     </header>
