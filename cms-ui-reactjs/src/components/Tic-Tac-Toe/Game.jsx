@@ -24,10 +24,13 @@ function deriveActivePlayer(gameTurns) {
 
 export default function Game() {
   const [gameTurns, setGameTurns] = useState([]);
+  const [players, setPlayers] = useState({
+    X: "Player 1",
+    O: "Player 2",
+  });
+
   const activePlayer = deriveActivePlayer(gameTurns);
-
   let gameBoard = [...initialGameBoard.map((array) => [...array])];
-
   for (const turn of gameTurns) {
     const { square, player } = turn;
     const { row, col } = square;
@@ -35,7 +38,6 @@ export default function Game() {
   }
 
   let winner;
-
   for (const combination of WINNING_COMBINATIONS) {
     const firstSquareSymbol =
       gameBoard[combination[0].row][combination[0].column];
@@ -49,7 +51,7 @@ export default function Game() {
       firstSquareSymbol === secondSquareSymbol &&
       firstSquareSymbol === thirdSquareSymbol
     ) {
-      winner = firstSquareSymbol;
+      winner = players[firstSquareSymbol];
     }
   }
 
@@ -70,6 +72,15 @@ export default function Game() {
     setGameTurns([]);
   }
 
+  function handlePlayerNameChange(symbol, newName) {
+    setPlayers((previousPlayers) => {
+      return {
+        ...previousPlayers,
+        [symbol]: newName,
+      };
+    });
+  }
+
   return (
     <header id="game" className="game-background game-header">
       <img src="game-logo.png" alt="Hand drawn Tic-Tac-Toe game board" />
@@ -80,11 +91,13 @@ export default function Game() {
             initialName="Player 1"
             symbol="X"
             isActive={activePlayer === "X"}
+            onChangeName={handlePlayerNameChange}
           ></Player>
           <Player
             initialName="Player 2"
             symbol="O"
             isActive={activePlayer === "O"}
+            onChangeName={handlePlayerNameChange}
           ></Player>
         </ol>
         {(winner || hasDraw) && (
