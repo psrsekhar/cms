@@ -1,14 +1,17 @@
 @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&family=Roboto+Condensed:wght@400;700&display=swap");
 
-#calculator {
-  text-align: center;
-  margin: 3rem auto;
-  max-width: 45rem;
-  padding: 2rem;
+.calculator {
+  max-width: 50rem;
+  padding: 1rem;
   border-radius: 6px;
   background: linear-gradient(#161616, #282617);
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
   position: relative;
+}
+
+#calculator {
+  text-align: center;
+  margin: 3rem auto;
 }
 
 #calculator img {
@@ -30,7 +33,7 @@
 
 #user-input {
   padding: 1rem;
-  max-width: 30rem;
+  max-width: 40rem;
   margin: 2rem auto;
   border-radius: 4px;
   background: linear-gradient(180deg, #307e6c, #2b996d);
