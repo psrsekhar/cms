@@ -2,16 +2,19 @@ import { useState } from "react";
 
 import Player from "./Player.jsx";
 import Board from "./Board.jsx";
+import Log from "./Log.jsx";
 
 import "./Game.css";
 
 export default function Game() {
+  const [gameTurns, setGameTurns] = useState([]);
   const [activePlayer, setActivePlayer] = useState("X");
 
   function handleSelectSquare() {
     setActivePlayer((currentActivePlayer) =>
       currentActivePlayer === "X" ? "O" : "X"
     );
+    setGameTurns();
   }
   return (
     <header id="game" className="game-background game-header">
@@ -35,6 +38,7 @@ export default function Game() {
           activePlayerSymbol={activePlayer}
         ></Board>
       </div>
+      <Log />
     </header>
   );
 }

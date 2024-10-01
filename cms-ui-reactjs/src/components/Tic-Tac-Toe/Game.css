@@ -20,7 +20,7 @@
     url("/bg-pattern.png");
   background-repeat: no-repeat, repeat;
   background-size: cover, auto;
-  min-height: 40rem;
+  min-height: 75rem;
 }
 
 .game-header {
