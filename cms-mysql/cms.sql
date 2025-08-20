@@ -1,7 +1,17 @@
 DROP DATABASE IF EXISTS cms;
 
 CREATE DATABASE IF NOT EXISTS cms CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+SHOW CREATE DATABASE cms;
 USE cms;
+
+-- Create a dedicated user with the least privilege
+CREATE USER 'cms_admin'@'localhost' IDENTIFIED BY 'Demo@!4#'; 
+
+-- Grant privileges (only for cms)
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, ALTER, INDEX, DROP ON cms.* TO 'cms_admin'@'localhost';
+
+-- Apply changes
+FLUSH PRIVILEGES;
 
 -- Create department table
 CREATE TABLE IF NOT EXISTS cms.department (
