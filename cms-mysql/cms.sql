@@ -4,13 +4,13 @@ CREATE DATABASE IF NOT EXISTS cms CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_
 USE cms;
 
 -- Create department table
-CREATE TABLE IF NOT EXISTS department (
+CREATE TABLE IF NOT EXISTS cms.department (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, 
     name VARCHAR(100) NOT NULL
 );
 
 -- Create employee table
-CREATE TABLE IF NOT EXISTS employee (
+CREATE TABLE IF NOT EXISTS cms.employee (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, 
     name VARCHAR(100) NOT NULL, 
     email VARCHAR(250), 
@@ -20,30 +20,30 @@ CREATE TABLE IF NOT EXISTS employee (
     qualification TEXT NOT NULL, 
     departmentId INT NOT NULL, 
     experience INT NOT NULL, 
-    FOREIGN KEY (departmentId) REFERENCES department(id) ON DELETE CASCADE
+    FOREIGN KEY (departmentId) REFERENCES cms.department(id) ON DELETE CASCADE
 );
 
 -- Create users table
-CREATE TABLE IF NOT EXISTS users (
+CREATE TABLE IF NOT EXISTS cms.users (
     employeeId INT NOT NULL PRIMARY KEY, 
     userName VARCHAR(50) NOT NULL, 
     password TEXT NOT NULL, 
     addedOn TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
-    FOREIGN KEY (employeeId) REFERENCES employee(id) ON DELETE CASCADE
+    FOREIGN KEY (employeeId) REFERENCES cms.employee(id) ON DELETE CASCADE
 );
 
 -- Create student table
-CREATE TABLE IF NOT EXISTS student (
+CREATE TABLE IF NOT EXISTS cms.student (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, 
     name VARCHAR(100) NOT NULL, 
     email VARCHAR(250), 
     address TEXT, 
     departmentId INT NOT NULL,
-    FOREIGN KEY (departmentId) REFERENCES department(id) ON DELETE CASCADE
+    FOREIGN KEY (departmentId) REFERENCES cms.department(id) ON DELETE CASCADE
 );
 
 -- Create book table
-CREATE TABLE IF NOT EXISTS book (
+CREATE TABLE IF NOT EXISTS cms.book (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, 
     title VARCHAR(100) NOT NULL, 
     author VARCHAR(250), 
@@ -52,28 +52,28 @@ CREATE TABLE IF NOT EXISTS book (
     edition TEXT NOT NULL, 
     addedBy INT NOT NULL, 
     logTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
-    FOREIGN KEY (addedBy) REFERENCES employee(id) ON DELETE CASCADE
+    FOREIGN KEY (addedBy) REFERENCES cms.employee(id) ON DELETE CASCADE
 );
 
 -- Create book_transactions table
-CREATE TABLE IF NOT EXISTS book_transactions (
+CREATE TABLE IF NOT EXISTS cms.book_transactions (
     studentId INT NOT NULL, 
     bookId INT NOT NULL, 
     issuedDate DATE NOT NULL, 
     returnDate DATE DEFAULT NULL, 
     fine INT NOT NULL DEFAULT 0,
 	isLostOrDamaged BOOLEAN NOT NULL DEFAULT FALSE,
-    FOREIGN KEY (studentId) REFERENCES student(id) ON DELETE CASCADE, 
-    FOREIGN KEY (bookId) REFERENCES book(id) ON DELETE CASCADE
+    FOREIGN KEY (studentId) REFERENCES cms.student(id) ON DELETE CASCADE, 
+    FOREIGN KEY (bookId) REFERENCES cms.book(id) ON DELETE CASCADE
 );
 
 -- Create student_semister table
-CREATE TABLE IF NOT EXISTS student_semisters (
+CREATE TABLE IF NOT EXISTS cms.student_semisters (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     studentId INT NOT NULL,
     year INT NOT NULL CHECK (year BETWEEN 1 AND 4),
     semester INT NOT NULL CHECK (semester BETWEEN 1 AND 2),
-    FOREIGN KEY (studentId) REFERENCES student(id) ON DELETE CASCADE
+    FOREIGN KEY (studentId) REFERENCES cms.student(id) ON DELETE CASCADE
 );
 
 
@@ -81,7 +81,7 @@ CREATE TABLE IF NOT EXISTS student_semisters (
 CREATE INDEX semister_id_idx ON student_semisters(id);
 
 -- Create student_marks table
-CREATE TABLE IF NOT EXISTS student_marks (
+CREATE TABLE IF NOT EXISTS cms.student_marks (
     id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     studentId INT NOT NULL,
     semisterId INT NOT NULL,
@@ -98,7 +98,7 @@ CREATE TABLE IF NOT EXISTS student_marks (
 );
 
 -- Create index for student_marks table on id, studentId, semisterId columns
-CREATE INDEX student_semister_id_idx ON student_marks(id, studentId, semisterId);
+CREATE INDEX student_semister_id_idx ON cms.student_marks(id, studentId, semisterId);
 
 -- Drop procedure if it exists
 DROP PROCEDURE IF EXISTS insert_book_transaction_if_eligible;
@@ -180,7 +180,7 @@ END //
 
 DELIMITER ;
 
-INSERT INTO department (name) VALUES ('Computer Science and Engineering'),
+INSERT INTO cms.department (name) VALUES ('Computer Science and Engineering'),
 ('Electrical and Electronics Engineering'),
 ('Mechanical Engineering'),
 ('Civil Engineering'), 
@@ -191,7 +191,7 @@ INSERT INTO department (name) VALUES ('Computer Science and Engineering'),
 ('Aerospace Engineering'),
 ('Environmental Engineering');
 
-INSERT INTO employee (name, email, address, doj, salary, qualification, departmentId, experience) VALUES
+INSERT INTO cms.employee (name, email, address, doj, salary, qualification, departmentId, experience) VALUES
 ('John Doe', 'john.doe@cms.com', '123 Elm St, Springfield, IL', '2020-01-15', 60000, 'B.Tech', 1, 5),
 ('Jane Smith', 'jane.smith@cms.com', '456 Oak St, Springfield, IL', '2019-02-20', 65000, 'M.Tech', 2, 6),
 ('Robert Johnson', 'robert.johnson@cms.com', '789 Pine St, Springfield, IL', '2021-03-25', 62000, 'B.Tech', 3, 4),
@@ -227,7 +227,7 @@ INSERT INTO employee (name, email, address, doj, salary, qualification, departme
 ('Edward Green', 'edward.green@cms.com', '3030 Pine St, Springfield, IL', '2018-09-30', 93000, 'B.Tech', 3, 4),
 ('Donna Adams', 'donna.adams@cms.com', '3131 Maple St, Springfield, IL', '2020-10-05', 94000, 'B.Tech', 4, 7);
 
-INSERT INTO users (employeeId, userName, password) VALUES
+INSERT INTO cms.users (employeeId, userName, password) VALUES
 (1, 'john.doe', MD5('password1')),
 (2, 'jane.smith', MD5('password2')),
 (3, 'robert.johnson', MD5('password3')),
@@ -263,7 +263,7 @@ INSERT INTO users (employeeId, userName, password) VALUES
 (33, 'edward.green', MD5('password33')),
 (34, 'donna.adams', MD5('password34'));
 
-INSERT INTO student (name, email, address, departmentId) VALUES
+INSERT INTO cms.student (name, email, address, departmentId) VALUES
 ('Alice Johnson', 'alice.johnson@cms.com', '123 Main St, Springfield, IL', 1),
 ('Bob Smith', 'bob.smith@cms.com', '456 Oak St, Springfield, IL', 2),
 ('Charlie Brown', 'charlie.brown@cms.com', '789 Pine St, Springfield, IL', 3),
@@ -315,7 +315,7 @@ INSERT INTO student (name, email, address, departmentId) VALUES
 ('Will Baker', 'will.baker@cms.com', '4646 Cherry St, Springfield, IL', 9),
 ('Xena Hall', 'xena.hall@cms.com', '4747 Dogwood St, Springfield, IL', 10);
 
-INSERT INTO book (title, author, price, available, edition, addedBy) VALUES
+INSERT INTO cms.book (title, author, price, available, edition, addedBy) VALUES
 ('Introduction to Computer Science', 'John Smith', 500, 1, '1st Edition', 1),
 ('Advanced Algorithms', 'Jane Doe', 600, 1, '2nd Edition', 2),
 ('Data Structures in C', 'Robert Johnson', 550, 1, '3rd Edition', 3),
